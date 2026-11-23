@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Painel de Custos das Fazendas</title>
+<meta name="theme-color" content="#261252">
+<meta name="robots" content="noindex,nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Custos Fazendas">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+:root{
+  color-scheme:light;
+  --brand:#261252;--brand-2:#FB4B2E;--brand-3:#15CC64;
+  --font-anthropic-sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-anthropic-serif:var(--font-anthropic-sans);
+  --color-fg:#1b1530;--color-fg-muted:#5d5870;--color-bg:#f5f4f8;--color-panel:#fff;--color-border-line:#e0dce9;
+  --color-bad:#c4260f;--color-warn:#a15c00;
+  --cds-font-size-body:15px;--cds-font-size-caption:13px;--cds-font-size-heading:16px;--cds-font-size-title:22px;--cds-font-weight-medium:600;
+  --cds-gap-sm:.5rem;--cds-gap-md:.75rem;--cds-gap-lg:1.25rem;--cds-pad-xs:.3rem;--cds-pad-sm:.5rem;--cds-pad-lg:1rem;--cds-radius:10px;
+  --cds-surface-popover:#fff;--cds-border:#e0dce9;--cds-shadow-popover:0 6px 20px rgba(38,18,82,.18);--cds-chart-muted:#a9a5b8;--cds-dur-slow:.3s;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--color-bg);color:var(--color-fg);font-family:var(--font-anthropic-sans);font-size:var(--cds-font-size-body);-webkit-text-size-adjust:100%}
+.dash-skeleton{min-height:6rem;background:linear-gradient(90deg,#ece9f3,#f6f4fa,#ece9f3);border-radius:8px}
+.pc-tv{font-weight:600}
+.pc-title{font-weight:600}
+.pc-sec{font-weight:600;color:var(--brand)}
+.pc-tile{border-top:3px solid var(--brand-2)}
+/* topo e login */
+.topo{background:var(--brand);color:#fff;padding:calc(.7rem + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) .7rem max(16px,env(safe-area-inset-left));display:flex;align-items:center;gap:.75rem}
+.topo img{width:30px;height:30px;border-radius:7px}
+.topo b{font-size:1rem;font-weight:600;flex:1}
+.topo button{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45);border-radius:8px;padding:.35rem .8rem;font:inherit;font-size:13px;cursor:pointer}
+main{padding:16px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
+#login{min-height:100vh;min-height:100dvh;background:var(--brand);display:flex;align-items:center;justify-content:center;padding:24px}
+#login form{background:#fff;border-radius:16px;padding:28px 24px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+#login img{width:64px;height:64px;border-radius:14px;align-self:center}
+#login h1{margin:0;text-align:center;font-size:1.25rem;color:var(--brand)}
+#login p{margin:0;text-align:center;color:var(--color-fg-muted);font-size:14px}
+#login input[type=password],#login input[type=text]{font:inherit;font-size:16px;padding:.7rem .8rem;border:1px solid var(--color-border-line);border-radius:10px;width:100%}
+#login .go{font:inherit;font-size:16px;font-weight:600;color:#fff;background:var(--brand-2);border:0;border-radius:10px;padding:.75rem;cursor:pointer}
+#login .go[disabled]{opacity:.6}
+#login label.chk{display:flex;gap:.5rem;align-items:center;font-size:14px;color:var(--color-fg-muted)}
+#erro{color:var(--color-bad);font-size:14px;text-align:center;min-height:1.3em}
+[hidden]{display:none!important}
+
+.pc{max-width:1240px;margin-inline:auto;font-family:var(--font-anthropic-sans);font-size:var(--cds-font-size-body);color:var(--color-fg);display:flex;flex-direction:column;gap:var(--cds-gap-lg)}
+.pc *{box-sizing:border-box}
+.pc-title{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0}
+.pc-take{margin:.35rem 0 0;color:var(--color-fg-muted);line-height:1.5}
+.pc-num{color:var(--color-fg);font-weight:600}
+.pc-filters{display:flex;flex-wrap:wrap;gap:var(--cds-gap-sm);align-items:flex-end;margin-top:var(--cds-gap-md)}
+.pc-filters label{display:flex;flex-direction:column;gap:.2rem;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.pc select,.pc input,.pc button{font:inherit;color:var(--color-fg);background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:.4rem .6rem;max-width:100%}
+.pc button{cursor:pointer}
+.pc button.is-on{background:var(--color-fg);color:var(--color-bg);border-color:var(--color-fg)}
+.pc button[disabled]{opacity:.4;cursor:not-allowed}
+.pc-upd{margin-left:auto;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);text-align:right}
+.pc-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11.5rem),1fr));gap:var(--cds-gap-md)}
+.pc-tile{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);display:flex;flex-direction:column;gap:.25rem;min-height:7.4rem}
+.pc-tl{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.pc-tv{font-family:var(--font-anthropic-serif);font-weight:400;font-size:1.7rem;line-height:1.15;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.pc-ts{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.pc-h2{margin:0;font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium)}
+.pc-sec{margin:var(--cds-gap-sm) 0 0;font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title)}
+.pc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr));gap:var(--cds-gap-md)}
+.pc-card{position:relative;background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);display:flex;flex-direction:column;gap:var(--cds-gap-md);min-width:0}
+.pc-ch{display:flex;justify-content:space-between;gap:var(--cds-gap-md);flex-wrap:wrap;align-items:flex-start}
+.pc-cn{margin:.15rem 0 0;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);line-height:1.45}
+.pc-ctl{display:flex;gap:.3rem;flex-wrap:wrap}
+.pc-body{min-height:6rem}
+.pc-empty,.pc-note{margin:0;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);line-height:1.5}
+.pc-brow{display:grid;grid-template-columns:minmax(8rem,36%) 1fr auto;gap:var(--cds-gap-sm);align-items:center;padding:.3rem .35rem;border-radius:var(--cds-radius)}
+.pc-brow.is-click{cursor:pointer}
+.pc-brow.is-click:hover{background:color-mix(in srgb,var(--color-fg) 6%,transparent)}
+.pc-brow.is-sel{background:color-mix(in srgb,var(--color-fg) 10%,transparent)}
+.pc-brow.is-ref .pc-bt{font-weight:600}
+.pc-bl{display:flex;flex-direction:column;min-width:0}
+.pc-bt{line-height:1.25;overflow-wrap:anywhere}
+.pc-bs{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);overflow-wrap:anywhere}
+.pc-track{height:.7rem;background:color-mix(in srgb,var(--color-fg) 7%,transparent);border-radius:.35rem;overflow:hidden}
+.pc-fill{height:100%;border-radius:.35rem}
+.pc-bv{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.pc-cols{display:flex;gap:.35rem;align-items:flex-end;overflow-x:auto;padding-bottom:.25rem}
+.pc-col{flex:1 1 0;min-width:3.6rem;display:flex;flex-direction:column;gap:.25rem;cursor:pointer}
+.pc-col-top{font-size:var(--cds-font-size-caption);text-align:center;color:var(--color-fg-muted);min-height:1.3em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pc-stack{display:flex;flex-direction:column-reverse;justify-content:flex-start;border-radius:.3rem .3rem 0 0;overflow:hidden}
+.pc-seg{flex:none}
+.pc-col-l{text-align:center;font-size:var(--cds-font-size-caption)}
+.pc-col.is-dim{opacity:.45}
+.pc-col.is-sel .pc-col-l{font-weight:600}
+.pc-leg{display:flex;flex-wrap:wrap;gap:.35rem .9rem;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.pc-leg i,.pc-tip-l i{display:inline-block;width:.6rem;height:.6rem;border-radius:.15rem;margin-right:.3rem}
+.pc-tw{overflow-x:auto}
+.pc-scroll{max-height:24rem;overflow:auto}
+.pc table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+.pc th,.pc td{padding:.35rem .5rem;text-align:left;border-bottom:1px solid var(--color-border-line);font-size:var(--cds-font-size-caption);vertical-align:top}
+.pc th{font-weight:var(--cds-font-weight-medium);color:var(--color-fg-muted);position:sticky;top:0;background:var(--color-panel)}
+.pc td.n,.pc th.n,.pc-heat td,.pc-heat th.n{text-align:right}
+.pc tr.g-erro td:first-child,.pc tr.g-erro td:nth-child(2){color:var(--color-bad)}
+.pc tr.g-atenção td:first-child,.pc tr.g-atenção td:nth-child(2){color:var(--color-warn)}
+.pc-tip{position:absolute;z-index:5;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-xs) var(--cds-pad-sm);font-size:var(--cds-font-size-caption);pointer-events:none;max-width:17rem}
+.pc-tip[hidden]{display:none}
+.pc-tip-l{line-height:1.5}
+.pc-qctl{display:flex;flex-wrap:wrap;gap:var(--cds-gap-sm)}
+.pc-notes{margin:0;padding-left:1.1rem;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);line-height:1.6}
+[data-dash-source-state=empty]{color:transparent}
+[data-dash-source-state=refreshing]{opacity:.5;transition:opacity var(--cds-dur-slow)}
+@media (max-width:34rem){.pc-brow{grid-template-columns:1fr auto}.pc-track{grid-column:1/-1;order:3}}
+
+</style>
+</head>
+<body>
+
+<div id="login">
+  <form id="f-login" autocomplete="on">
+    <img src="icons/icon-192.png" alt="">
+    <h1>Painel de Custos das Fazendas</h1>
+    <p>Digite a senha para abrir o painel.</p>
+    <input type="text" name="usuario" value="painel" autocomplete="username" hidden>
+    <input id="senha" type="password" placeholder="Senha" autocomplete="current-password" required>
+    <label class="chk"><input id="lembrar" type="checkbox"> Manter conectado neste aparelho</label>
+    <button class="go" id="entrar" type="submit">Entrar</button>
+    <div id="erro" role="alert"></div>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <div class="topo"><img src="icons/icon-192.png" alt=""><b>Custos das fazendas</b><button id="sair" type="button">Sair</button></div>
+  <main>
+<div class="pc" id="painel">
+
+  <header>
+    <h1 class="pc-title">Custos das fazendas · safra 2026/2027</h1>
+    <p class="pc-take" id="pc-take"></p>
+    <div class="pc-filters">
+      <label>Fazenda <select id="f-faz" data-source="kpi" aria-label="Fazenda"></select></label>
+      <label>Mês de competência <select id="f-mes" data-source="kpi" aria-label="Mês de competência"></select></label>
+      <button id="f-reset" type="button">Limpar filtros</button>
+      <span class="pc-upd" id="pc-upd"></span>
+    </div>
+  </header>
+
+  <section class="pc-tiles" id="s-resumo" aria-label="Resumo do período">
+    <div class="pc-tile"><div class="pc-tl">Custo no período</div><div class="pc-tv" id="t1v" data-source="kpi" data-field="valor">—</div><div class="pc-ts" id="t1s"></div></div>
+    <div class="pc-tile"><div class="pc-tl">Custo por hectare</div><div class="pc-tv" id="t2v" data-source="kpi" data-field="custo_ha">—</div><div class="pc-ts" id="t2s"></div></div>
+    <div class="pc-tile"><div class="pc-tl">Mão de obra (fixa + colheita)</div><div class="pc-tv" id="t3v" data-source="kpi" data-field="pct_mo">—</div><div class="pc-ts" id="t3s"></div></div>
+    <div class="pc-tile"><div class="pc-tl">Maior categoria de custo</div><div class="pc-tv" id="t4v" data-source="kpi" data-field="cat_top">—</div><div class="pc-ts" id="t4s"></div></div>
+    <div class="pc-tile"><div class="pc-tl">Valor médio por lançamento</div><div class="pc-tv" id="t5v" data-source="kpi" data-field="ticket">—</div><div class="pc-ts" id="t5s"></div></div>
+  </section>
+
+  <h2 class="pc-sec">Custo ao longo do tempo</h2>
+  <section class="pc-card" id="card-mensal">
+    <div class="pc-ch">
+      <div>
+        <h3 class="pc-h2">Custo mês a mês, por categoria</h3>
+        <p class="pc-cn">Mês pela competência do lançamento (não pela data do pagamento). Clique em um mês para filtrar o painel inteiro; clique de novo para voltar a todos.</p>
+      </div>
+      <div class="pc-ctl" role="group" aria-label="Unidade do gráfico">
+        <button type="button" data-metrica="valor">R$</button>
+        <button type="button" data-metrica="ha" id="b-ha">R$ por hectare</button>
+      </div>
+    </div>
+    <div id="c-mensal" class="pc-body dash-skeleton" data-source="mensal kpi"></div>
+    <div class="pc-tip" hidden></div>
+  </section>
+
+  <h2 class="pc-sec">Custo por hectare</h2>
+  <div class="pc-grid">
+    <section class="pc-card" id="card-ha">
+      <div>
+        <h3 class="pc-h2">Quem custa mais por hectare</h3>
+        <p class="pc-cn">Custo do período filtrado dividido pela área da fazenda na planilha de talhões. Clique em uma fazenda para filtrar.</p>
+      </div>
+      <div id="c-ha" class="pc-body dash-skeleton" data-source="kpi"></div>
+    </section>
+    <section class="pc-card" id="card-heat">
+      <div>
+        <h3 class="pc-h2">Onde o hectare mais pesa: categoria por fazenda</h3>
+        <p class="pc-cn">R$ por hectare em cada categoria; quanto mais escuro, maior o custo. Última linha: média das fazendas com área.</p>
+      </div>
+      <div id="c-heat" class="pc-body pc-tw dash-skeleton" data-source="cat_cubo kpi"></div>
+    </section>
+  </div>
+
+  <h2 class="pc-sec">Onde estamos gastando</h2>
+  <div class="pc-grid">
+    <section class="pc-card" id="card-comp">
+      <div>
+        <h3 class="pc-h2">Composição do custo por categoria</h3>
+        <p class="pc-cn">Para a fazenda e o mês escolhidos acima.</p>
+      </div>
+      <div id="c-comp" class="pc-body dash-skeleton" data-source="cat_cubo"></div>
+    </section>
+    <section class="pc-card" id="card-rank">
+      <div class="pc-ch">
+        <div>
+          <h3 class="pc-h2">Maiores custos</h3>
+          <p class="pc-cn">Os itens que mais pesam, com a participação no custo total e o valor por hectare quando há área.</p>
+        </div>
+        <div class="pc-ctl" role="group" aria-label="Agrupar por">
+          <button type="button" data-ranking="tipo_item">Tipo de item</button>
+          <button type="button" data-ranking="nome_conta">Nome conta</button>
+        </div>
+      </div>
+      <div id="c-rank" class="pc-body dash-skeleton" data-source="rankings"></div>
+    </section>
+  </div>
+
+  <div class="pc-grid">
+    <section class="pc-card" id="card-forn">
+      <div>
+        <h3 class="pc-h2">Principais fornecedores</h3>
+        <p class="pc-cn">Folha de pagamento (mão de obra fixa) não aparece por nome, para proteger os dados dos colaboradores.</p>
+      </div>
+      <div id="c-forn" class="pc-body dash-skeleton" data-source="rankings"></div>
+    </section>
+    <section class="pc-card" id="card-frota">
+      <div>
+        <h3 class="pc-h2">Manutenção por máquina</h3>
+        <p class="pc-cn">Custo de manutenção de oficina por código informado no campo Frota (alguns códigos podem estar digitados de formas diferentes).</p>
+      </div>
+      <div id="c-frota" class="pc-body dash-skeleton" data-source="rankings"></div>
+    </section>
+    <section class="pc-card" id="card-dest">
+      <div>
+        <h3 class="pc-h2">Para onde vai o custo (destinação)</h3>
+        <p class="pc-cn">Campo Destinação dos lançamentos.</p>
+      </div>
+      <div id="c-dest" class="pc-body dash-skeleton" data-source="rankings"></div>
+    </section>
+  </div>
+
+  <h2 class="pc-sec">Pagamentos</h2>
+  <div class="pc-grid">
+    <section class="pc-card" id="card-pag">
+      <div>
+        <h3 class="pc-h2">Forma de pagamento</h3>
+        <p class="pc-cn">Quanto do custo foi pago com nota fiscal e quanto por recibo ou outros meios.</p>
+      </div>
+      <div id="c-pag" class="pc-body dash-skeleton" data-source="rankings"></div>
+    </section>
+    <section class="pc-card" id="card-venc">
+      <div>
+        <h3 class="pc-h2">Vencimentos por mês</h3>
+        <p class="pc-cn">Valor dos lançamentos pelo mês da data de vencimento, para a fazenda escolhida.</p>
+      </div>
+      <div id="c-venc" class="pc-body dash-skeleton" data-source="vencimentos"></div>
+      <div class="pc-tip" hidden></div>
+    </section>
+  </div>
+
+  <h2 class="pc-sec">Qualidade dos dados</h2>
+  <section class="pc-tiles" aria-label="Resumo da qualidade">
+    <div class="pc-tile"><div class="pc-tl">Lançamentos analisados</div><div class="pc-tv" id="q1v" data-source="geral" data-field="linhas" data-where="id=geral">—</div><div class="pc-ts">nas planilhas recebidas</div></div>
+    <div class="pc-tile"><div class="pc-tl">Com pendência (erro ou atenção)</div><div class="pc-tv" id="q2v" data-source="geral" data-field="linhas_com_pendencia" data-where="id=geral">—</div><div class="pc-ts" id="q2s"></div></div>
+    <div class="pc-tile"><div class="pc-tl">Planilhas atualizadas em</div><div class="pc-tv" id="q3v" data-source="geral" data-field="atualizado_em" data-where="id=geral">—</div><div class="pc-ts" id="q3s"></div></div>
+  </section>
+  <section class="pc-card" id="card-qual">
+    <div>
+      <h3 class="pc-h2">O que precisa ser corrigido nas planilhas</h3>
+      <p class="pc-cn">Erro: dado incoerente que atrapalha as análises. Atenção: campo vazio ou suspeito. Informativo: apenas para conhecimento (não entra na lista de correções). Use o filtro para mandar a cada fazenda só o que é dela.</p>
+    </div>
+    <div class="pc-qctl">
+      <label class="pc-ts">Planilha <select id="q-pl" data-source="planilhas" aria-label="Planilha"></select></label>
+      <label class="pc-ts">Gravidade <select id="q-gr" aria-label="Gravidade"><option value="todas">Erro e atenção</option><option value="erro">Só erros</option><option value="atenção">Só atenção</option></select></label>
+      <label class="pc-ts">Buscar na lista <input id="q-bu" type="search" placeholder="fornecedor, linha, problema…" aria-label="Buscar"></label>
+    </div>
+    <div class="pc-tw"><table id="t-qual" data-source="qualidade" data-row-key="id"></table></div>
+    <h3 class="pc-h2">Lista de linhas a corrigir</h3>
+    <p class="pc-note" id="q-count"></p>
+    <div class="pc-scroll pc-tw"><table id="t-pend" data-source="pendencias" data-row-key="id"></table></div>
+  </section>
+
+  <h2 class="pc-sec">De onde vêm os números</h2>
+  <div class="pc-grid">
+    <section class="pc-card" id="card-plan">
+      <div>
+        <h3 class="pc-h2">Planilhas recebidas</h3>
+        <p class="pc-cn">Confira aqui se todas as fazendas enviaram a planilha da semana (último lançamento e meses cobertos).</p>
+      </div>
+      <div class="pc-tw"><table id="t-plan" data-source="planilhas" data-row-key="id"></table></div>
+    </section>
+    <section class="pc-card" id="card-areas">
+      <div>
+        <h3 class="pc-h2">Áreas usadas no custo por hectare</h3>
+        <p class="pc-cn">Soma dos talhões de cada aba da planilha de talhões, sem as linhas de "Total" (que dobrariam a área), mais as áreas estimadas do projeto da Santa Fé M.G.</p>
+      </div>
+      <div class="pc-tw"><table id="t-areas" data-source="areas" data-row-key="id"></table></div>
+    </section>
+  </div>
+  <section class="pc-card">
+    <h3 class="pc-h2">Como ler este painel</h3>
+    <ul class="pc-notes">
+      <li>Os valores usam a competência de cada lançamento; lançamentos com data ou competência fora do esperado estão na lista de correções.</li>
+      <li>Custo por hectare = custo do período ÷ área cadastrada. Fazendas sem área (ou ainda sem fazenda correspondente na planilha de talhões) não entram nesse indicador.</li>
+      <li>A aba Las Palmas da planilha de talhões corresponde à Santa Fé - Paranapanema.</li>
+      <li>As áreas da Santa Fé M.G. são estimativas do projeto, porque a fazenda ainda não está toda plantada: o custo por hectare dessas culturas aparece menor do que seria sobre a área efetivamente plantada. O mamão é plantado entre as laranjeiras e por isso não é somado ao total; o café ainda não tem custo lançado.</li>
+      <li>Na aba de Cercado Grande da planilha de talhões, as duas subfazendas (Santa Olga e Cercado Grande) foram somadas.</li>
+      <li>A classificação orçamentária é a que consta em cada lançamento; as diferenças em relação ao padrão do Tipo de Item aparecem como informativo.</li>
+      <li>Nomes de fazendas foram padronizados (maiúsculas/minúsculas) e o nome antigo "Santa Fé - Minas Gerais" aparece separado até ser reclassificado nas planilhas.</li>
+    </ul>
+  </section>
+</div>
+
+
+  </main>
+</div>
+
+<script>
+// ---------------------------------------------------------------- abertura dos dados (AES-GCM + PBKDF2)
+const bin = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+async function abrir(senha) {
+  const r = await fetch('dados.enc', { cache: 'no-store' });
+  if (!r.ok) throw new Error('rede');
+  const p = await r.json();
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(senha), 'PBKDF2', false, ['deriveKey']);
+  const chave = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: bin(p.salt), iterations: p.it, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  let claro;
+  try { claro = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bin(p.iv) }, chave, bin(p.ct)); }
+  catch (e) { throw new Error('senha'); }
+  const fluxo = new Blob([claro]).stream().pipeThrough(new DecompressionStream('gzip'));
+  return JSON.parse(await new Response(fluxo).text());
+}
+
+// ---------------------------------------------------------------- pequena camada de dados/filtros usada pelo painel
+const dash = (() => {
+  let dados = {}, params = {}; const cbs = [];
+  const fire = () => cbs.forEach((f) => f());
+  return {
+    colors: ['#261252', '#FB4B2E', '#15CC64', '#2F7FD1', '#E0A100', '#9B5DE5', '#6B7C8F'],
+    data: (id) => (dados[id] ? { status: 'ok', data: dados[id] } : { status: 'loading', data: null }),
+    params: () => params,
+    setParams: (o) => { params = Object.assign({}, params, o); fire(); },
+    resetParams: () => { params = {}; fire(); },
+    onData: (f) => { cbs.push(f); },
+    carregar: (d) => { dados = d; params = {}; fire(); }
+  };
+})();
+
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const num = (v) => (v === null || v === undefined || v === '') ? null : Number(v);
+  const nf0 = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
+  const nf1 = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
+  const nf2 = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const brl0 = (v) => 'R$ ' + nf0.format(v);
+  const brlC = (v) => {
+    const a = Math.abs(v);
+    if (a >= 1e6) return 'R$ ' + nf2.format(v / 1e6) + ' mi';
+    if (a >= 1e4) return 'R$ ' + nf1.format(v / 1e3) + ' mil';
+    return brl0(v);
+  };
+  const pct = (v) => nf1.format(v * 100) + '%';
+  const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  const fmtMes = (m) => m === 'TODOS' ? 'Todos os meses' : MESES[Number(m.slice(5, 7)) - 1] + '/' + m.slice(2, 4);
+  const fmtData = (s) => s ? s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4) : '';
+  const fazLabel = (f) => f === 'TODAS' ? 'Todas as fazendas' : f;
+  const enc = (s) => String(s).replace(/%/g, '%25').replace(/&/g, '%26').replace(/=/g, '%3D');
+  const where = (o) => Object.entries(o).map(([k, v]) => k + '=' + enc(v)).join('&');
+  const monthRange = (a, b) => {
+    const out = [];
+    let y = Number(a.slice(0, 4)), m = Number(a.slice(5, 7));
+    const ye = Number(b.slice(0, 4)), me = Number(b.slice(5, 7));
+    while (y < ye || (y === ye && m <= me)) {
+      out.push(y + '-' + String(m).padStart(2, '0'));
+      m += 1;
+      if (m > 12) { m = 1; y += 1; }
+    }
+    return out;
+  };
+
+  const h = (tag, attrs, ...kids) => {
+    const e = document.createElement(tag);
+    if (attrs) {
+      for (const [k, v] of Object.entries(attrs)) {
+        if (v === null || v === undefined || v === false) continue;
+        if (k === 'text') e.textContent = v;
+        else if (k === 'class') e.className = v;
+        else e.setAttribute(k, v === true ? '' : v);
+      }
+    }
+    kids.flat().filter((c) => c !== null && c !== undefined && c !== false).forEach((c) => e.append(c));
+    return e;
+  };
+
+  const D = (id) => dash.data(id);
+  const R = (id) => { const d = D(id); return d.status === 'ok' && Array.isArray(d.data) ? d.data : []; };
+  const P = () => {
+    const p = dash.params() || {};
+    return { fazenda: p.fazenda || 'TODAS', mes: p.mes || 'TODOS', metrica: p.metrica || 'valor', ranking: p.ranking || 'tipo_item' };
+  };
+  const done = (el) => { el.replaceChildren(); el.classList.remove('dash-skeleton'); return el; };
+  const noData = (el, txt) => el.append(h('p', { class: 'pc-empty', text: txt }));
+
+  // ---------- categorias e cores (derivadas dos dados)
+  let CATS = [];
+  const catColor = (c) => { const i = CATS.indexOf(c); return i >= 0 ? dash.colors[i % dash.colors.length] : 'var(--cds-chart-muted)'; };
+
+  // ---------- dica ao passar o mouse
+  const tipShow = (card, ev, lines) => {
+    const t = card.querySelector('.pc-tip');
+    if (!t) return;
+    t.replaceChildren(...lines.map((l) => h('div', { class: 'pc-tip-l' }, l.sw ? h('i', { style: 'background:' + l.sw }) : null, h('span', { text: l.t }))));
+    t.hidden = false;
+    const r = card.getBoundingClientRect();
+    const x = ev.clientX - r.left, y = ev.clientY - r.top;
+    t.style.left = Math.max(8, Math.min(x + 12, r.width - t.offsetWidth - 8)) + 'px';
+    t.style.top = (y + 14) + 'px';
+  };
+  const tipHide = (card) => { const t = card.querySelector('.pc-tip'); if (t) t.hidden = true; };
+
+  const barRow = (o) => {
+    const row = h('div', { class: 'pc-brow' + (o.sel ? ' is-sel' : '') + (o.ref ? ' is-ref' : '') + (o.onClick ? ' is-click' : '') });
+    const lab = h('div', { class: 'pc-bl' }, h('span', { class: 'pc-bt', text: o.label }), o.sub ? h('span', { class: 'pc-bs', text: o.sub }) : null);
+    const w = o.max > 0 ? Math.max(0.6, Math.min(100, o.value / o.max * 100)) : 0;
+    const track = h('div', { class: 'pc-track' }, h('div', { class: 'pc-fill', style: 'width:' + w + '%;background:' + (o.color || dash.colors[0]) }));
+    row.append(lab, track, h('div', { class: 'pc-bv', text: o.text }));
+    if (o.onClick) { row.tabIndex = 0; row.addEventListener('click', o.onClick); }
+    return row;
+  };
+
+  const dataTable = (table, rows, cols, keyField, rowClass) => {
+    table.replaceChildren();
+    const thead = h('thead', null, h('tr', null, cols.map((c) => h('th', { 'data-field': c.f, class: c.n ? 'n' : null, text: c.t }))));
+    const tbody = h('tbody');
+    rows.forEach((r) => {
+      tbody.append(h('tr', { 'data-key': String(r[keyField]), class: rowClass ? rowClass(r) : null },
+        cols.map((c) => h('td', { class: c.n ? 'n' : null, text: c.fmt ? c.fmt(r[c.f], r) : (r[c.f] === null || r[c.f] === undefined ? '' : String(r[c.f])) }))));
+    });
+    table.append(thead, tbody);
+  };
+
+  // ---------- controles (ligados uma vez)
+  $('#f-faz').addEventListener('change', (e) => dash.setParams({ fazenda: e.target.value }));
+  $('#f-mes').addEventListener('change', (e) => dash.setParams({ mes: e.target.value }));
+  $('#f-reset').addEventListener('click', () => dash.resetParams());
+  document.querySelectorAll('[data-metrica]').forEach((b) => b.addEventListener('click', () => dash.setParams({ metrica: b.getAttribute('data-metrica') })));
+  document.querySelectorAll('[data-ranking]').forEach((b) => b.addEventListener('click', () => dash.setParams({ ranking: b.getAttribute('data-ranking') })));
+  const qs = { planilha: 'TODAS', grav: 'todas', q: '' };
+  $('#q-pl').addEventListener('change', (e) => { qs.planilha = e.target.value; drawQual(); });
+  $('#q-gr').addEventListener('change', (e) => { qs.grav = e.target.value; drawQual(); });
+  $('#q-bu').addEventListener('input', (e) => { qs.q = e.target.value.toLowerCase(); drawQual(); });
+
+  // ---------- filtros
+  const fillFilters = (p) => {
+    const k = R('kpi');
+    if (!k.length) return;
+    const fz = [...new Set(k.map((r) => r.fazenda))];
+    const ms0 = [...new Set(k.map((r) => r.mes))].filter((m) => m !== 'TODOS').sort();
+    const ms = ms0.length ? monthRange(ms0[0], ms0[ms0.length - 1]) : [];
+    const sf = $('#f-faz'), sm = $('#f-mes');
+    sf.replaceChildren(...fz.map((f) => new Option(fazLabel(f), f)));
+    sm.replaceChildren(new Option('Todos os meses', 'TODOS'), ...ms.map((m) => new Option(fmtMes(m), m)));
+    sf.value = p.fazenda;
+    sm.value = p.mes;
+  };
+
+  const kpiRow = (f, m) => R('kpi').find((r) => r.fazenda === f && r.mes === m);
+
+  const drawHeader = (p) => {
+    const el = $('#pc-take');
+    el.replaceChildren();
+    const k = kpiRow(p.fazenda, p.mes);
+    if (D('kpi').status === 'ok') {
+      if (!k || !num(k.n)) {
+        el.textContent = 'Não há lançamentos para ' + fazLabel(p.fazenda).toLowerCase() + ' em ' + fmtMes(p.mes).toLowerCase() + '.';
+      } else {
+        const w = where({ fazenda: p.fazenda, mes: p.mes });
+        const mk = (field, text) => h('span', { class: 'pc-num', 'data-source': 'kpi', 'data-field': field, 'data-where': w, text });
+        el.append(p.fazenda === 'TODAS' ? 'No conjunto das fazendas' : p.fazenda, ' (', fmtMes(p.mes).toLowerCase(), ') o custo foi de ',
+          mk('valor', brlC(num(k.valor))), ' em ', mk('n', nf0.format(num(k.n))), ' lançamentos; a maior fatia é ',
+          mk('cat_top', k.cat_top), ' (', mk('pct_cat_top', pct(num(k.pct_cat_top))), ' do custo).');
+      }
+    }
+    const g = R('geral')[0];
+    const up = $('#pc-upd');
+    up.replaceChildren();
+    if (g) {
+      up.append('Planilhas atualizadas em ', h('span', { class: 'pc-num', 'data-source': 'geral', 'data-field': 'atualizado_em', 'data-where': 'id=geral', text: fmtData(g.atualizado_em) }),
+        ' · último lançamento em ', h('span', { class: 'pc-num', 'data-source': 'geral', 'data-field': 'ultimo_lancamento', 'data-where': 'id=geral', text: fmtData(g.ultimo_lancamento) }));
+    }
+  };
+
+  const drawTiles = (p) => {
+    const k = kpiRow(p.fazenda, p.mes);
+    const w = where({ fazenda: p.fazenda, mes: p.mes });
+    const set = (n, text, sub) => {
+      const v = $('#t' + n + 'v');
+      v.textContent = text;
+      if (k) v.setAttribute('data-where', w);
+      $('#t' + n + 's').textContent = sub;
+    };
+    if (!k) { for (let n = 1; n <= 5; n += 1) set(n, '—', ''); return; }
+    const valor = num(k.valor), nn = num(k.n), ha = num(k.ha), cha = num(k.custo_ha);
+    set(1, brlC(valor), nf0.format(nn) + ' lançamentos · ' + fmtMes(p.mes).toLowerCase());
+    set(2, cha === null ? '—' : 'R$ ' + nf0.format(cha) + '/ha',
+      ha === null ? 'sem área cadastrada para esta fazenda' : (p.fazenda === 'TODAS' ? 'só fazendas com área (' + nf0.format(ha) + ' ha' + (num(k.area_estimada) ? ', parte estimada' : '') + ')'
+      : nf1.format(ha) + (num(k.area_estimada) ? ' ha estimados (projeto)' : ' ha cadastrados')));
+    set(3, num(k.pct_mo) === null ? '—' : pct(num(k.pct_mo)), brlC(num(k.valor_mo) || 0) + ' em mão de obra');
+    set(4, k.cat_top || '—', num(k.pct_cat_top) === null ? '' : pct(num(k.pct_cat_top)) + ' do custo · ' + brlC(num(k.valor_cat_top) || 0));
+    set(5, num(k.ticket) === null ? '—' : brl0(num(k.ticket)), 'por lançamento');
+  };
+
+  // ---------- custo mês a mês
+  const drawMensal = (p) => {
+    const box = done($('#c-mensal'));
+    const card = $('#card-mensal');
+    const rows = R('mensal').filter((r) => r.fazenda === p.fazenda);
+    const meses = [...new Set(R('kpi').map((r) => r.mes))].filter((m) => m !== 'TODOS').sort();
+    const ha = rows.length ? num(rows[0].ha) : null;
+    const bHa = $('#b-ha');
+    bHa.disabled = !ha;
+    document.querySelectorAll('[data-metrica]').forEach((b) => b.classList.toggle('is-on', b.getAttribute('data-metrica') === (p.metrica === 'ha' && ha ? 'ha' : 'valor')));
+    if (!rows.length || !meses.length) { noData(box, 'Sem lançamentos mensais para esta fazenda.'); return; }
+    const porHa = p.metrica === 'ha' && !!ha;
+    const todos = monthRange(meses[0], meses[meses.length - 1]);
+    const val = (m, c) => {
+      const r = rows.find((x) => x.mes === m && x.categoria === c);
+      if (!r) return 0;
+      return porHa ? (num(r.valor_base_ha) || 0) / ha : (num(r.valor) || 0);
+    };
+    const fmt = (v) => porHa ? 'R$ ' + nf0.format(v) : brlC(v);
+    const tot = todos.map((m) => CATS.reduce((s, c) => s + val(m, c), 0));
+    const max = Math.max(...tot, 1);
+    const H = 220;
+    const wrap = h('div', { class: 'pc-cols' });
+    todos.forEach((m, i) => {
+      const col = h('div', { class: 'pc-col' + (p.mes === m ? ' is-sel' : (p.mes !== 'TODOS' ? ' is-dim' : '')), role: 'button', tabindex: '0', 'aria-label': 'Filtrar por ' + fmtMes(m) });
+      const stack = h('div', { class: 'pc-stack', style: 'height:' + H + 'px' });
+      CATS.forEach((c, ci) => {
+        const v = val(m, c);
+        if (v <= 0) return;
+        const seg = h('div', { class: 'pc-seg', style: 'height:' + Math.max(1, v / max * H) + 'px;background:' + catColor(c) });
+        seg.addEventListener('mousemove', (ev) => tipShow(card, ev, [{ t: fmtMes(m) }, { sw: catColor(c), t: c + ': ' + fmt(v) }, { t: 'Total do mês: ' + fmt(tot[i]) }]));
+        seg.addEventListener('mouseleave', () => tipHide(card));
+        stack.append(seg);
+      });
+      col.append(h('div', { class: 'pc-col-top', text: tot[i] > 0 ? fmt(tot[i]) : '' }), stack, h('div', { class: 'pc-col-l', text: fmtMes(m) }));
+      const toggle = () => dash.setParams({ mes: p.mes === m ? 'TODOS' : m });
+      col.addEventListener('click', toggle);
+      col.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(); } });
+      wrap.append(col);
+    });
+    const leg = h('div', { class: 'pc-leg' }, CATS.map((c) => h('span', null, h('i', { style: 'background:' + catColor(c) }), c)));
+    box.append(wrap, leg);
+    if (p.metrica === 'ha' && !ha) box.append(h('p', { class: 'pc-note', text: 'Esta fazenda ainda não tem área cadastrada; mostrando em R$.' }));
+  };
+
+  // ---------- custo por hectare
+  const drawHa = (p) => {
+    const box = done($('#c-ha'));
+    const k = R('kpi').filter((r) => r.mes === p.mes && r.fazenda !== 'TODAS');
+    const com = k.filter((r) => num(r.custo_ha) !== null).sort((a, b) => num(b.custo_ha) - num(a.custo_ha));
+    const sem = k.filter((r) => num(r.custo_ha) === null && num(r.valor) > 0).sort((a, b) => num(b.valor) - num(a.valor));
+    const media = kpiRow('TODAS', p.mes);
+    if (!com.length) { noData(box, 'Nenhuma fazenda com área cadastrada tem custo neste mês.'); return; }
+    const max = Math.max(...com.map((r) => num(r.custo_ha)), media && num(media.custo_ha) ? num(media.custo_ha) : 0, 1);
+    com.forEach((r, i) => box.append(barRow({
+      label: r.fazenda, value: num(r.custo_ha), max, color: dash.colors[i % dash.colors.length],
+      text: 'R$ ' + nf0.format(num(r.custo_ha)) + '/ha', sub: nf1.format(num(r.ha)) + ' ha' + (num(r.area_estimada) ? ' (estimada)' : '') + ' · ' + brlC(num(r.valor)),
+      sel: p.fazenda === r.fazenda, onClick: () => dash.setParams({ fazenda: p.fazenda === r.fazenda ? 'TODAS' : r.fazenda })
+    })));
+    if (media && num(media.custo_ha)) {
+      box.append(barRow({ label: 'Média das fazendas com área', value: num(media.custo_ha), max, color: 'var(--cds-chart-muted)', ref: true,
+        text: 'R$ ' + nf0.format(num(media.custo_ha)) + '/ha', sub: nf0.format(num(media.ha)) + ' ha no total' + (num(media.area_estimada) ? ' (inclui áreas estimadas)' : '') }));
+    }
+    if (sem.length) box.append(h('p', { class: 'pc-note', text: 'Sem área cadastrada (não entram no R$/ha): ' + sem.map((r) => r.fazenda + ' (' + brlC(num(r.valor)) + ')').join(' · ') + '.' }));
+  };
+
+  const drawHeat = (p) => {
+    const box = done($('#c-heat'));
+    const cub = R('cat_cubo').filter((r) => r.mes === p.mes);
+    const farms = R('kpi').filter((r) => r.mes === p.mes && r.fazenda !== 'TODAS' && num(r.ha)).map((r) => r.fazenda);
+    if (!farms.length || !CATS.length) { noData(box, 'Sem fazendas com área cadastrada.'); return; }
+    const linhas = [...farms, 'TODAS'];
+    const get = (f, c) => { const r = cub.find((x) => x.fazenda === f && x.categoria === c); return r ? num(r.custo_ha) : null; };
+    let max = 1;
+    linhas.forEach((f) => CATS.forEach((c) => { const v = get(f, c); if (v !== null && v > max) max = v; }));
+    const table = h('table', { class: 'pc-heat' });
+    table.append(h('thead', null, h('tr', null, h('th', { text: 'Fazenda' }), CATS.map((c) => h('th', { class: 'n', text: c })), h('th', { class: 'n', text: 'Total' }))));
+    const tb = h('tbody');
+    linhas.forEach((f) => {
+      const tr = h('tr', null, h('td', { text: f === 'TODAS' ? 'Média (fazendas com área)' : f }));
+      CATS.forEach((c) => {
+        const v = get(f, c);
+        const td = h('td', { text: v === null ? '—' : nf0.format(v) });
+        if (v !== null && v > 0) td.style.background = 'color-mix(in srgb, ' + catColor(c) + ' ' + Math.round(v / max * 75) + '%, transparent)';
+        tr.append(td);
+      });
+      const kr = kpiRow(f, p.mes);
+      tr.append(h('td', { text: kr && num(kr.custo_ha) !== null ? nf0.format(num(kr.custo_ha)) : '—' }));
+      tb.append(tr);
+    });
+    table.append(tb);
+    box.append(table, h('p', { class: 'pc-note', text: 'Valores em R$ por hectare.' }));
+  };
+
+  // ---------- composição e rankings
+  const drawComp = (p) => {
+    const box = done($('#c-comp'));
+    const rows = R('cat_cubo').filter((r) => r.fazenda === p.fazenda && r.mes === p.mes && num(r.valor) > 0).sort((a, b) => num(b.valor) - num(a.valor));
+    if (!rows.length) { noData(box, 'Sem lançamentos para esta combinação.'); return; }
+    const max = Math.max(...rows.map((r) => num(r.valor)), 1);
+    rows.forEach((r) => box.append(barRow({
+      label: r.categoria, value: num(r.valor), max, color: catColor(r.categoria),
+      text: brlC(num(r.valor)) + ' · ' + pct(num(r.pct)), sub: num(r.custo_ha) !== null ? 'R$ ' + nf0.format(num(r.custo_ha)) + '/ha' + (p.fazenda === 'TODAS' ? ' (só fazendas com área)' : '') : null
+    })));
+  };
+
+  const drawList = (boxId, dim, p, opts) => {
+    const box = done($(boxId));
+    const rows = R('rankings').filter((r) => r.dim === dim && r.fazenda === p.fazenda && r.mes === p.mes).sort((a, b) => a.rank - b.rank);
+    if (!rows.length) { noData(box, opts && opts.vazio ? opts.vazio : 'Sem lançamentos para esta combinação.'); return; }
+    const max = Math.max(...rows.map((r) => num(r.valor)), 1);
+    rows.forEach((r) => {
+      const partes = String(r.rotulo).split(' · ');
+      const nome = partes.length > 1 ? partes.slice(1).join(' · ') : r.rotulo;
+      const subs = [];
+      if (partes.length > 1) subs.push(partes[0]);
+      if (r.rank !== 99 && opts && opts.categoria && r.categoria) subs.push(r.categoria);
+      subs.push(nf0.format(num(r.n)) + ' lançamentos');
+      if (num(r.custo_ha) !== null) subs.push('R$ ' + nf0.format(num(r.custo_ha)) + '/ha');
+      box.append(barRow({
+        label: nome, value: num(r.valor), max, color: r.rank === 99 ? 'var(--cds-chart-muted)' : (opts && opts.cor ? opts.cor : catColor(r.categoria)),
+        text: brlC(num(r.valor)) + ' · ' + pct(num(r.pct)), sub: subs.join(' · ')
+      }));
+    });
+  };
+
+  const drawRank = (p) => {
+    document.querySelectorAll('[data-ranking]').forEach((b) => b.classList.toggle('is-on', b.getAttribute('data-ranking') === p.ranking));
+    drawList('#c-rank', p.ranking, p, null);
+  };
+
+  // ---------- vencimentos
+  const drawVenc = (p) => {
+    const box = done($('#c-venc'));
+    const card = $('#card-venc');
+    const rows = R('vencimentos').filter((r) => r.fazenda === p.fazenda);
+    if (!rows.length) { noData(box, 'Sem vencimentos para esta fazenda.'); return; }
+    const ms = rows.map((r) => r.mes_venc).sort();
+    const todos = monthRange(ms[0], ms[ms.length - 1]);
+    const v = (m) => { const r = rows.find((x) => x.mes_venc === m); return r ? num(r.valor) : 0; };
+    const max = Math.max(...todos.map(v), 1);
+    const H = 160;
+    const wrap = h('div', { class: 'pc-cols' });
+    todos.forEach((m) => {
+      const col = h('div', { class: 'pc-col' });
+      const stack = h('div', { class: 'pc-stack', style: 'height:' + H + 'px' });
+      if (v(m) > 0) {
+        const seg = h('div', { class: 'pc-seg', style: 'height:' + Math.max(1, v(m) / max * H) + 'px;background:' + dash.colors[1 % dash.colors.length] });
+        seg.addEventListener('mousemove', (ev) => tipShow(card, ev, [{ t: 'Vencimento em ' + fmtMes(m) }, { t: brl0(v(m)) }]));
+        seg.addEventListener('mouseleave', () => tipHide(card));
+        stack.append(seg);
+      }
+      col.append(h('div', { class: 'pc-col-top', text: v(m) > 0 ? brlC(v(m)) : '' }), stack, h('div', { class: 'pc-col-l', text: fmtMes(m) }));
+      wrap.append(col);
+    });
+    box.append(wrap);
+  };
+
+  // ---------- qualidade
+  const drawQualTiles = () => {
+    const g = R('geral')[0];
+    if (!g) return;
+    $('#q1v').textContent = nf0.format(num(g.linhas));
+    $('#q2v').textContent = nf0.format(num(g.linhas_com_pendencia));
+    $('#q2s').textContent = pct(num(g.linhas_com_pendencia) / Math.max(1, num(g.linhas))) + ' dos lançamentos';
+    $('#q3v').textContent = fmtData(g.atualizado_em);
+    $('#q3s').textContent = 'último lançamento em ' + fmtData(g.ultimo_lancamento);
+  };
+
+  const drawQual = () => {
+    if (D('qualidade').status !== 'ok' || D('pendencias').status !== 'ok') return;
+    const q = R('qualidade').filter((r) => r.planilha === qs.planilha);
+    dataTable($('#t-qual'), q, [
+      { f: 'problema', t: 'Pendência' }, { f: 'gravidade', t: 'Gravidade', fmt: (v) => v === 'info' ? 'informativo' : v },
+      { f: 'n', t: 'Linhas', n: true, fmt: (v) => nf0.format(v) }, { f: 'valor', t: 'Valor', n: true, fmt: (v) => brl0(v) }
+    ], 'id', (r) => 'g-' + r.gravidade);
+    const pend = R('pendencias').filter((r) => (qs.planilha === 'TODAS' || r.planilha === qs.planilha) && (qs.grav === 'todas' || r.gravidade === qs.grav) &&
+      (!qs.q || [r.planilha, r.linha, r.fazenda, r.fornecedor, r.problema, fmtData(r.data)].join(' ').toLowerCase().includes(qs.q)))
+      .sort((a, b) => (a.gravidade === b.gravidade ? 0 : (a.gravidade === 'erro' ? -1 : 1)) || a.planilha.localeCompare(b.planilha) || a.linha - b.linha);
+    $('#q-count').textContent = nf0.format(pend.length) + ' linhas na lista (a coluna "Linha" é o número da linha na aba Lançamentos da planilha de origem).';
+    dataTable($('#t-pend'), pend, [
+      { f: 'gravidade', t: 'Gravidade' }, { f: 'problema', t: 'Problema' }, { f: 'planilha', t: 'Planilha' },
+      { f: 'linha', t: 'Linha', n: true, fmt: (v) => nf0.format(v) }, { f: 'fazenda', t: 'Fazenda' },
+      { f: 'data', t: 'Data', fmt: (v) => fmtData(v) }, { f: 'fornecedor', t: 'Fornecedor' },
+      { f: 'valor', t: 'Valor', n: true, fmt: (v) => brl2(v) }
+    ], 'id', (r) => 'g-' + r.gravidade);
+  };
+  const brl2 = (v) => 'R$ ' + nf2.format(v);
+
+  const fillQualFilter = () => {
+    const pl = R('planilhas');
+    if (!pl.length) return;
+    const s = $('#q-pl');
+    s.replaceChildren(new Option('Todas as planilhas', 'TODAS'), ...pl.map((r) => new Option(r.planilha, r.planilha)));
+    s.value = qs.planilha;
+  };
+
+  const drawFontes = () => {
+    if (D('planilhas').status === 'ok') {
+      dataTable($('#t-plan'), R('planilhas'), [
+        { f: 'planilha', t: 'Planilha' }, { f: 'linhas', t: 'Linhas', n: true, fmt: (v) => nf0.format(v) },
+        { f: 'valor', t: 'Valor', n: true, fmt: (v) => brl0(v) },
+        { f: 'competencia_de', t: 'Competência de', fmt: (v) => fmtMes(v) }, { f: 'competencia_ate', t: 'até', fmt: (v) => fmtMes(v) },
+        { f: 'ultimo_lancamento', t: 'Último lançamento', fmt: (v) => fmtData(v) }
+      ], 'id');
+    }
+    if (D('areas').status === 'ok') {
+      dataTable($('#t-areas'), R('areas'), [
+        { f: 'aba', t: 'Aba' }, { f: 'subfazenda', t: 'Subfazenda' }, { f: 'area_ha', t: 'Área (ha)', n: true, fmt: (v) => nf2.format(v) },
+        { f: 'talhoes', t: 'Talhões', n: true, fmt: (v) => v === null || v === undefined ? '—' : nf0.format(v) }, { f: 'fazenda_painel', t: 'Fazenda dos lançamentos', fmt: (v) => v || '—' },
+        { f: 'usada_no_custo_por_ha', t: 'Usada no R$/ha' }, { f: 'observacao', t: 'Observação' }
+      ], 'id');
+    }
+  };
+
+  // ---------- desenho geral
+  dash.onData(() => {
+    const p = P();
+    if (D('cat_cubo').status === 'ok') CATS = [...new Set(R('cat_cubo').map((r) => r.categoria))];
+    fillFilters(p);
+    fillQualFilter();
+    drawHeader(p);
+    drawTiles(p);
+    drawMensal(p);
+    drawHa(p);
+    drawHeat(p);
+    drawComp(p);
+    drawRank(p);
+    drawList('#c-forn', 'fornecedor', p, { cor: dash.colors[0], vazio: 'Sem fornecedores identificados para esta combinação.' });
+    drawList('#c-frota', 'frota', p, { cor: dash.colors[1 % dash.colors.length], vazio: 'Sem manutenção com código de frota para esta combinação.' });
+    drawList('#c-dest', 'destinacao', p, { cor: dash.colors[2 % dash.colors.length], vazio: 'Sem destinação informada para esta combinação.' });
+    drawList('#c-pag', 'forma', p, { cor: dash.colors[3 % dash.colors.length] });
+    drawVenc(p);
+    drawQualTiles();
+    drawQual();
+    drawFontes();
+  });
+})();
+
+
+// ---------------------------------------------------------------- tela de senha
+const $$ = (s) => document.querySelector(s);
+const CHAVE = 'painel-senha';
+const guardada = () => { try { return localStorage.getItem(CHAVE); } catch (e) { return null; } };
+const guardar = (v) => { try { v === null ? localStorage.removeItem(CHAVE) : localStorage.setItem(CHAVE, v); } catch (e) {} };
+
+async function entrar(senha, auto) {
+  const btn = $$('#entrar'); btn.disabled = true; btn.textContent = 'Abrindo…'; $$('#erro').textContent = '';
+  try {
+    if (!window.crypto || !crypto.subtle) throw new Error('seguro');
+    if (typeof DecompressionStream === 'undefined') throw new Error('navegador');
+    const dados = await abrir(senha);
+    if ($$('#lembrar').checked || auto) guardar(senha); else guardar(null);
+    $$('#login').hidden = true; $$('#app').hidden = false; window.scrollTo(0, 0);
+    dash.carregar(dados);
+    $$('#senha').value = '';
+  } catch (e) {
+    if (auto) guardar(null);
+    $$('#erro').textContent = ({ senha: 'Senha incorreta.', rede: 'Não consegui baixar os dados. Verifique a internet e tente de novo.',
+      seguro: 'Abra o painel pelo endereço https do GitHub.', navegador: 'Este navegador é antigo demais. Atualize o navegador do celular.' })[e.message] || 'Erro ao abrir: ' + e.message;
+  } finally { btn.disabled = false; btn.textContent = 'Entrar'; }
+}
+$$('#f-login').addEventListener('submit', (ev) => { ev.preventDefault(); entrar($$('#senha').value, false); });
+$$('#sair').addEventListener('click', () => { guardar(null); location.reload(); });
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+const g0 = guardada(); if (g0) { $$('#lembrar').checked = true; entrar(g0, true); }
+</script>
+</body>
+</html>
