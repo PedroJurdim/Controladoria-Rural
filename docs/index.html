@@ -3,9 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Painel de Custos das Fazendas</title>
-<meta name="theme-color" content="#261252">
+<title>Painel de Custos · Agro Bardin</title>
+<meta name="theme-color" content="#33176b">
 <meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -16,39 +19,46 @@
 <style>
 :root{
   color-scheme:light;
-  --brand:#261252;--brand-2:#FB4B2E;--brand-3:#15CC64;
-  --font-anthropic-sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --brand:#33176b;--brand-ink:#261252;--brand-2:#fa4a2e;--brand-3:#1ac963;--agua:#00bfc7;--nublado:#a3b2bf;--mormaco:#bacfdb;
+  --font-anthropic-sans:"Raleway",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --font-anthropic-serif:var(--font-anthropic-sans);
-  --color-fg:#1b1530;--color-fg-muted:#5d5870;--color-bg:#f5f4f8;--color-panel:#fff;--color-border-line:#e0dce9;
-  --color-bad:#c4260f;--color-warn:#a15c00;
+  --color-fg:#261252;--color-fg-muted:#5f5878;--color-bg:#f4f6f9;--color-panel:#fff;--color-border-line:#dce3ea;
+  --color-bad:#bd3824;--color-warn:#8a6a00;
   --cds-font-size-body:15px;--cds-font-size-caption:13px;--cds-font-size-heading:16px;--cds-font-size-title:22px;--cds-font-weight-medium:600;
   --cds-gap-sm:.5rem;--cds-gap-md:.75rem;--cds-gap-lg:1.25rem;--cds-pad-xs:.3rem;--cds-pad-sm:.5rem;--cds-pad-lg:1rem;--cds-radius:10px;
-  --cds-surface-popover:#fff;--cds-border:#e0dce9;--cds-shadow-popover:0 6px 20px rgba(38,18,82,.18);--cds-chart-muted:#a9a5b8;--cds-dur-slow:.3s;
+  --cds-surface-popover:#fff;--cds-border:#dce3ea;--cds-shadow-popover:0 6px 20px rgba(38,18,82,.18);--cds-chart-muted:#a3b2bf;--cds-dur-slow:.3s;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--color-bg);color:var(--color-fg);font-family:var(--font-anthropic-sans);font-size:var(--cds-font-size-body);-webkit-text-size-adjust:100%}
 .dash-skeleton{min-height:6rem;background:linear-gradient(90deg,#ece9f3,#f6f4fa,#ece9f3);border-radius:8px}
-.pc-tv{font-weight:600}
-.pc-title{font-weight:600}
-.pc-sec{font-weight:600;color:var(--brand)}
+.pc-tv{font-weight:700}
+.pc-sec{font-weight:800;color:var(--brand)}
 .pc-tile{border-top:3px solid var(--brand-2)}
 /* topo e login */
-.topo{background:var(--brand);color:#fff;padding:calc(.7rem + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) .7rem max(16px,env(safe-area-inset-left));display:flex;align-items:center;gap:.75rem}
-.topo img{width:30px;height:30px;border-radius:7px}
-.topo b{font-size:1rem;font-weight:600;flex:1}
-.topo button{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45);border-radius:8px;padding:.35rem .8rem;font:inherit;font-size:13px;cursor:pointer}
-main{padding:16px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
-#login{min-height:100vh;min-height:100dvh;background:var(--brand);display:flex;align-items:center;justify-content:center;padding:24px}
-#login form{background:#fff;border-radius:16px;padding:28px 24px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 40px rgba(0,0,0,.35)}
-#login img{width:64px;height:64px;border-radius:14px;align-self:center}
-#login h1{margin:0;text-align:center;font-size:1.25rem;color:var(--brand)}
+.pc-tv{letter-spacing:-.01em}
+.pc-title{font-weight:800;color:var(--brand);letter-spacing:-.01em}
+.pc-h2{color:var(--brand)}
+.topo{background:var(--brand);color:#fff;padding:calc(.6rem + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) .6rem max(16px,env(safe-area-inset-left));display:flex;align-items:center;gap:.75rem;border-bottom:4px solid var(--brand-2)}
+.topo .logo{height:40px;width:auto;display:block}
+.topo .sp{flex:1}
+.topo .quem{font-size:13px;font-weight:600;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40vw}
+.topo button{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:8px;padding:.4rem .9rem;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+main{padding:20px max(16px,env(safe-area-inset-right)) 28px max(16px,env(safe-area-inset-left))}
+.rodape{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:space-between;border-top:1px solid var(--color-border-line);margin:8px max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left));padding:22px 0 calc(30px + env(safe-area-inset-bottom));color:var(--color-fg-muted);font-size:13px}
+.rodape img{height:40px;width:auto;display:block}
+#login{position:relative;overflow:hidden;min-height:100vh;min-height:100dvh;background:var(--brand);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:max(24px,env(safe-area-inset-top)) 24px 32px}
+#login .deco{position:absolute;left:0;bottom:0;width:100%;height:60%;object-fit:cover;object-position:right center;opacity:.95;pointer-events:none}
+#login .logo{position:relative;height:48px;width:auto;max-width:86%;display:block}
+#login form{position:relative;background:#fff;border-radius:18px;padding:28px 24px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:14px;box-shadow:0 14px 44px rgba(20,8,50,.45)}
+#login h1{margin:0;text-align:center;font-size:1.3rem;font-weight:800;color:var(--brand)}
 #login p{margin:0;text-align:center;color:var(--color-fg-muted);font-size:14px}
-#login input[type=password],#login input[type=text]{font:inherit;font-size:16px;padding:.7rem .8rem;border:1px solid var(--color-border-line);border-radius:10px;width:100%}
-#login .go{font:inherit;font-size:16px;font-weight:600;color:#fff;background:var(--brand-2);border:0;border-radius:10px;padding:.75rem;cursor:pointer}
+#login input[type=password],#login input[type=text]{font:inherit;font-size:16px;padding:.75rem .85rem;border:1px solid var(--color-border-line);border-radius:10px;width:100%;color:var(--color-fg)}
+#login input:focus{outline:2px solid var(--brand-2);outline-offset:1px}
+#login .go{font:inherit;font-size:16px;font-weight:700;color:#fff;background:var(--brand-2);border:0;border-radius:10px;padding:.8rem;cursor:pointer}
 #login .go[disabled]{opacity:.6}
 #login label.chk{display:flex;gap:.5rem;align-items:center;font-size:14px;color:var(--color-fg-muted)}
-#erro{color:var(--color-bad);font-size:14px;text-align:center;min-height:1.3em}
+#erro{color:var(--color-bad);font-size:14px;text-align:center;min-height:1.3em;font-weight:600}
 [hidden]{display:none!important}
 
 .pc{max-width:1240px;margin-inline:auto;font-family:var(--font-anthropic-sans);font-size:var(--cds-font-size-body);color:var(--color-fg);display:flex;flex-direction:column;gap:var(--cds-gap-lg)}
@@ -115,17 +125,81 @@ main{padding:16px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-ar
 [data-dash-source-state=refreshing]{opacity:.5;transition:opacity var(--cds-dur-slow)}
 @media (max-width:34rem){.pc-brow{grid-template-columns:1fr auto}.pc-track{grid-column:1/-1;order:3}}
 
+
+/* abas */
+.abas{position:sticky;top:0;z-index:20;display:flex;gap:6px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--color-border-line);padding:8px max(16px,env(safe-area-inset-right)) 8px max(16px,env(safe-area-inset-left));-webkit-overflow-scrolling:touch}
+.abas button{flex:none;font:inherit;font-size:14px;font-weight:700;color:var(--brand);background:transparent;border:1px solid transparent;border-radius:999px;padding:.45rem 1rem;cursor:pointer;white-space:nowrap}
+.abas button.on{background:var(--brand);color:#fff}
+.aba[hidden]{display:none}
+.aba.col{display:flex;flex-direction:column;gap:var(--cds-gap-lg)}
+/* BI */
+.bi-f{position:relative}
+.bi-f>summary{list-style:none;cursor:pointer;font-size:13px;font-weight:600;background:#fff;border:1px solid var(--color-border-line);border-radius:8px;padding:.45rem .7rem;white-space:nowrap}
+.bi-f>summary::-webkit-details-marker{display:none}
+.bi-f>summary::after{content:" ▾";color:var(--color-fg-muted)}
+.bi-f.ativo>summary{border-color:var(--brand-2);background:#fff4f1}
+.bi-fp{position:absolute;z-index:15;top:calc(100% + 4px);left:0;width:min(86vw,320px);background:#fff;border:1px solid var(--color-border-line);border-radius:10px;box-shadow:var(--cds-shadow-popover);padding:8px;display:flex;flex-direction:column;gap:6px}
+.bi-fp input[type=search]{font:inherit;font-size:14px;padding:.4rem .5rem;border:1px solid var(--color-border-line);border-radius:6px;width:100%}
+.bi-fp .acoes{display:flex;gap:6px}
+.bi-fp .acoes button{font:inherit;font-size:12px;background:#f4f6f9;border:1px solid var(--color-border-line);border-radius:6px;padding:.2rem .6rem;cursor:pointer}
+.bi-fl{max-height:260px;overflow:auto;display:flex;flex-direction:column;gap:2px}
+.bi-fl label{display:flex;gap:.5rem;align-items:flex-start;font-size:13px;padding:3px 2px;cursor:pointer;line-height:1.25}
+.bi-fl label:hover{background:#f4f6f9}
+.bi-fl .mais{font-size:12px;color:var(--color-fg-muted);padding:4px 2px}
+.bi-barra{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.bi-barra label{display:flex;flex-direction:column;gap:.2rem;font-size:12px;color:var(--color-fg-muted)}
+.bi-barra select{font:inherit;font-size:14px;padding:.4rem .5rem;border:1px solid var(--color-border-line);border-radius:8px;background:#fff;color:var(--color-fg)}
+.bi-barra button{font:inherit;font-size:13px;font-weight:600;background:#fff;color:var(--brand);border:1px solid var(--brand);border-radius:8px;padding:.45rem .8rem;cursor:pointer}
+.bi-t{width:100%;border-collapse:collapse;font-size:14px}
+.bi-t th{position:sticky;top:0;background:#fff;text-align:left;font-size:12px;color:var(--color-fg-muted);font-weight:700;padding:6px 8px;border-bottom:2px solid var(--color-border-line);cursor:pointer;white-space:nowrap}
+.bi-t th.n,.bi-t td.n{white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums}
+.bi-t td{padding:6px 8px;border-bottom:1px solid #edf0f4;vertical-align:middle}
+.bi-t tr.tot td{font-weight:800;border-top:2px solid var(--color-border-line);background:#faf9fd}
+.bi-b{display:block;min-width:90px;height:8px;background:#eee9f6;border-radius:4px;overflow:hidden}
+.bi-b i{display:block;height:100%;background:var(--brand-2);border-radius:4px}
+.bi-nota{font-size:13px;color:var(--color-fg-muted);margin:0}
+.bi-vazio{color:var(--color-fg-muted);padding:1rem 0}
+
+.bi-chips{display:flex;flex-wrap:wrap;gap:6px}
+.bi-chip{font:inherit;font-size:12px;font-weight:600;color:var(--brand);background:#efeaf8;border:0;border-radius:999px;padding:.3rem .7rem;cursor:pointer}
+.bi-link{font:inherit;font-size:13px;font-weight:600;color:var(--brand);background:transparent;border:0;padding:.3rem 0;cursor:pointer;text-decoration:underline}
+.bi-ctl{display:flex;flex-direction:column;gap:.2rem;font-size:12px;color:var(--color-fg-muted)}
+.bi-ctl select{font:inherit;font-size:14px;padding:.4rem .5rem;border:1px solid var(--color-border-line);border-radius:8px;background:#fff;color:var(--color-fg)}
+.bi-cab{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-start}
+.bi-grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:var(--cds-gap-lg)}
+.bi-grade>.pc-card{min-width:0}
+.bi-rolagem{overflow-x:auto;padding-bottom:4px}
+.bi-cols{display:flex;gap:6px;align-items:flex-end;height:250px;min-width:100%}
+.bi-col{flex:1 0 34px;display:flex;flex-direction:column;justify-content:flex-end;height:100%;cursor:pointer;text-align:center}
+.bi-col.fraco{opacity:.3}.bi-col.vazio{cursor:default;opacity:.5}
+.bi-col:hover .bi-pilha{outline:2px solid var(--brand-2)}
+.bi-pilha{display:flex;flex-direction:column-reverse;justify-content:flex-start;flex:1;min-height:0}
+.bi-pilha i{display:block;width:100%;flex:none}
+.bi-pilha{flex:0 0 190px;justify-content:flex-start;position:relative}
+.bi-vv{font-size:10.5px;color:var(--color-fg-muted);height:16px;line-height:16px;white-space:nowrap}
+.bi-ml{font-size:11px;color:var(--color-fg-muted);padding-top:4px;white-space:nowrap}
+.bi-leg{display:flex;flex-wrap:wrap;gap:6px 10px}
+.bi-lg{display:flex;gap:6px;align-items:center;font:inherit;font-size:12px;background:transparent;border:0;cursor:pointer;color:var(--color-fg);padding:2px 0}
+.bi-lg i{width:10px;height:10px;border-radius:2px;display:inline-block}.bi-lg.fraco{opacity:.35}
+.bi-lista{display:flex;flex-direction:column;gap:2px}
+.bi-lh{display:grid;grid-template-columns:minmax(90px,34%) 1fr auto;gap:8px;align-items:center;padding:5px 6px;border-radius:6px;cursor:pointer;font-size:13px}
+.bi-lh:hover{background:#f4f6f9}.bi-lh.on{background:#fff1ee;outline:1px solid var(--brand-2)}.bi-lh.fraco{opacity:.4}
+.bi-ln{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bi-lb{height:10px;background:#eee9f6;border-radius:5px;overflow:hidden}.bi-lb i{display:block;height:100%;border-radius:5px}
+.bi-lv{font-variant-numeric:tabular-nums;font-size:12px;color:var(--color-fg-muted);text-align:right;white-space:nowrap}
+@media (max-width:600px){.bi-lh{grid-template-columns:1fr auto;grid-template-areas:"n v" "b b"}.bi-ln{grid-area:n}.bi-lv{grid-area:v}.bi-lb{grid-area:b}.bi-vv{font-size:9px}}
 </style>
 </head>
 <body>
 
 <div id="login">
+  <img class="deco" src="img/grafismo.svg" alt="">
+  <img class="logo" src="img/logo-secundaria.svg" alt="Agro Bardin">
   <form id="f-login" autocomplete="on">
-    <img src="icons/icon-192.png" alt="">
-    <h1>Painel de Custos das Fazendas</h1>
+    <h1>Painel de Custos</h1>
     <p>Digite a senha para abrir o painel.</p>
     <input type="text" name="usuario" value="painel" autocomplete="username" hidden>
-    <input id="senha" type="password" placeholder="Senha" autocomplete="current-password" required>
+    <input id="senha" type="password" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Senha" autocomplete="current-password" required>
     <label class="chk"><input id="lembrar" type="checkbox"> Manter conectado neste aparelho</label>
     <button class="go" id="entrar" type="submit">Entrar</button>
     <div id="erro" role="alert"></div>
@@ -133,130 +207,24 @@ main{padding:16px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-ar
 </div>
 
 <div id="app" hidden>
-  <div class="topo"><img src="icons/icon-192.png" alt=""><b>Custos das fazendas</b><button id="sair" type="button">Sair</button></div>
+  <div class="topo"><img class="logo" src="img/logo-secundaria.svg" alt="Agro Bardin"><span class="sp"></span><span class="quem" id="quem"></span><button id="sair" type="button">Sair</button></div>
+  <nav class="abas" id="abas" aria-label="Seções do painel">
+    <button type="button" data-aba="geral" class="on">Visão geral</button>
+    <button type="button" data-aba="explorar">Explorar</button>
+    <button type="button" data-aba="frota">Frota</button>
+    <button type="button" data-aba="qual">Qualidade dos dados</button>
+  </nav>
   <main>
 <div class="pc" id="painel">
 
-  <header>
-    <h1 class="pc-title">Custos das fazendas · safra 2026/2027</h1>
-    <p class="pc-take" id="pc-take"></p>
-    <div class="pc-filters">
-      <label>Fazenda <select id="f-faz" data-source="kpi" aria-label="Fazenda"></select></label>
-      <label>Mês de competência <select id="f-mes" data-source="kpi" aria-label="Mês de competência"></select></label>
-      <button id="f-reset" type="button">Limpar filtros</button>
-      <span class="pc-upd" id="pc-upd"></span>
-    </div>
-  </header>
+<section class="pc-card" id="filtros" hidden></section>
 
-  <section class="pc-tiles" id="s-resumo" aria-label="Resumo do período">
-    <div class="pc-tile"><div class="pc-tl">Custo no período</div><div class="pc-tv" id="t1v" data-source="kpi" data-field="valor">—</div><div class="pc-ts" id="t1s"></div></div>
-    <div class="pc-tile"><div class="pc-tl">Custo por hectare</div><div class="pc-tv" id="t2v" data-source="kpi" data-field="custo_ha">—</div><div class="pc-ts" id="t2s"></div></div>
-    <div class="pc-tile"><div class="pc-tl">Mão de obra (fixa + colheita)</div><div class="pc-tv" id="t3v" data-source="kpi" data-field="pct_mo">—</div><div class="pc-ts" id="t3s"></div></div>
-    <div class="pc-tile"><div class="pc-tl">Maior categoria de custo</div><div class="pc-tv" id="t4v" data-source="kpi" data-field="cat_top">—</div><div class="pc-ts" id="t4s"></div></div>
-    <div class="pc-tile"><div class="pc-tl">Valor médio por lançamento</div><div class="pc-tv" id="t5v" data-source="kpi" data-field="ticket">—</div><div class="pc-ts" id="t5s"></div></div>
-  </section>
+<div class="aba col" id="v-geral"></div>
 
-  <h2 class="pc-sec">Custo ao longo do tempo</h2>
-  <section class="pc-card" id="card-mensal">
-    <div class="pc-ch">
-      <div>
-        <h3 class="pc-h2">Custo mês a mês, por categoria</h3>
-        <p class="pc-cn">Mês pela competência do lançamento (não pela data do pagamento). Clique em um mês para filtrar o painel inteiro; clique de novo para voltar a todos.</p>
-      </div>
-      <div class="pc-ctl" role="group" aria-label="Unidade do gráfico">
-        <button type="button" data-metrica="valor">R$</button>
-        <button type="button" data-metrica="ha" id="b-ha">R$ por hectare</button>
-      </div>
-    </div>
-    <div id="c-mensal" class="pc-body dash-skeleton" data-source="mensal kpi"></div>
-    <div class="pc-tip" hidden></div>
-  </section>
+<div class="aba col" id="v-explorar" hidden></div>
+<div class="aba col" id="v-frota" hidden></div>
 
-  <h2 class="pc-sec">Custo por hectare</h2>
-  <div class="pc-grid">
-    <section class="pc-card" id="card-ha">
-      <div>
-        <h3 class="pc-h2">Quem custa mais por hectare</h3>
-        <p class="pc-cn">Custo do período filtrado dividido pela área da fazenda na planilha de talhões. Clique em uma fazenda para filtrar.</p>
-      </div>
-      <div id="c-ha" class="pc-body dash-skeleton" data-source="kpi"></div>
-    </section>
-    <section class="pc-card" id="card-heat">
-      <div>
-        <h3 class="pc-h2">Onde o hectare mais pesa: categoria por fazenda</h3>
-        <p class="pc-cn">R$ por hectare em cada categoria; quanto mais escuro, maior o custo. Última linha: média das fazendas com área.</p>
-      </div>
-      <div id="c-heat" class="pc-body pc-tw dash-skeleton" data-source="cat_cubo kpi"></div>
-    </section>
-  </div>
-
-  <h2 class="pc-sec">Onde estamos gastando</h2>
-  <div class="pc-grid">
-    <section class="pc-card" id="card-comp">
-      <div>
-        <h3 class="pc-h2">Composição do custo por categoria</h3>
-        <p class="pc-cn">Para a fazenda e o mês escolhidos acima.</p>
-      </div>
-      <div id="c-comp" class="pc-body dash-skeleton" data-source="cat_cubo"></div>
-    </section>
-    <section class="pc-card" id="card-rank">
-      <div class="pc-ch">
-        <div>
-          <h3 class="pc-h2">Maiores custos</h3>
-          <p class="pc-cn">Os itens que mais pesam, com a participação no custo total e o valor por hectare quando há área.</p>
-        </div>
-        <div class="pc-ctl" role="group" aria-label="Agrupar por">
-          <button type="button" data-ranking="tipo_item">Tipo de item</button>
-          <button type="button" data-ranking="nome_conta">Nome conta</button>
-        </div>
-      </div>
-      <div id="c-rank" class="pc-body dash-skeleton" data-source="rankings"></div>
-    </section>
-  </div>
-
-  <div class="pc-grid">
-    <section class="pc-card" id="card-forn">
-      <div>
-        <h3 class="pc-h2">Principais fornecedores</h3>
-        <p class="pc-cn">Folha de pagamento (mão de obra fixa) não aparece por nome, para proteger os dados dos colaboradores.</p>
-      </div>
-      <div id="c-forn" class="pc-body dash-skeleton" data-source="rankings"></div>
-    </section>
-    <section class="pc-card" id="card-frota">
-      <div>
-        <h3 class="pc-h2">Manutenção por máquina</h3>
-        <p class="pc-cn">Custo de manutenção de oficina por código informado no campo Frota (alguns códigos podem estar digitados de formas diferentes).</p>
-      </div>
-      <div id="c-frota" class="pc-body dash-skeleton" data-source="rankings"></div>
-    </section>
-    <section class="pc-card" id="card-dest">
-      <div>
-        <h3 class="pc-h2">Para onde vai o custo (destinação)</h3>
-        <p class="pc-cn">Campo Destinação dos lançamentos.</p>
-      </div>
-      <div id="c-dest" class="pc-body dash-skeleton" data-source="rankings"></div>
-    </section>
-  </div>
-
-  <h2 class="pc-sec">Pagamentos</h2>
-  <div class="pc-grid">
-    <section class="pc-card" id="card-pag">
-      <div>
-        <h3 class="pc-h2">Forma de pagamento</h3>
-        <p class="pc-cn">Quanto do custo foi pago com nota fiscal e quanto por recibo ou outros meios.</p>
-      </div>
-      <div id="c-pag" class="pc-body dash-skeleton" data-source="rankings"></div>
-    </section>
-    <section class="pc-card" id="card-venc">
-      <div>
-        <h3 class="pc-h2">Vencimentos por mês</h3>
-        <p class="pc-cn">Valor dos lançamentos pelo mês da data de vencimento, para a fazenda escolhida.</p>
-      </div>
-      <div id="c-venc" class="pc-body dash-skeleton" data-source="vencimentos"></div>
-      <div class="pc-tip" hidden></div>
-    </section>
-  </div>
-
+<div class="aba col" id="v-qual" hidden>
   <h2 class="pc-sec">Qualidade dos dados</h2>
   <section class="pc-tiles" aria-label="Resumo da qualidade">
     <div class="pc-tile"><div class="pc-tl">Lançamentos analisados</div><div class="pc-tv" id="q1v" data-source="geral" data-field="linhas" data-where="id=geral">—</div><div class="pc-ts">nas planilhas recebidas</div></div>
@@ -299,6 +267,7 @@ main{padding:16px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-ar
   <section class="pc-card">
     <h3 class="pc-h2">Como ler este painel</h3>
     <ul class="pc-notes">
+      <li>Este painel é só de <b>custos</b>: mão de obra (folha, colheita, turmeiros, diárias, EPI, farmácia, cestas básicas, alimentação e alojamento) fica de fora e terá painel próprio.</li>
       <li>Os valores usam a competência de cada lançamento; lançamentos com data ou competência fora do esperado estão na lista de correções.</li>
       <li>Custo por hectare = custo do período ÷ área cadastrada. Fazendas sem área (ou ainda sem fazenda correspondente na planilha de talhões) não entram nesse indicador.</li>
       <li>A aba Las Palmas da planilha de talhões corresponde à Santa Fé - Paranapanema.</li>
@@ -309,16 +278,22 @@ main{padding:16px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-ar
     </ul>
   </section>
 </div>
+</div>
 
 
   </main>
+  <footer class="rodape"><img src="img/logo-principal.svg" alt="Agro Bardin"><span>Painel de controladoria · dados das planilhas das fazendas</span></footer>
 </div>
 
 <script>
 // ---------------------------------------------------------------- abertura dos dados (AES-GCM + PBKDF2)
 const bin = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
 async function abrir(senha) {
-  const r = await fetch('dados.enc', { cache: 'no-store' });
+  senha = senha.trim().toLowerCase();
+  const cod = senha.split('-')[0];
+  if (!/^[a-z0-9]{4}$/.test(cod)) throw new Error('senha');
+  const r = await fetch('d/' + cod + '.enc', { cache: 'no-store' });
+  if (r.status === 404) throw new Error('senha');
   if (!r.ok) throw new Error('rede');
   const p = await r.json();
   const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(senha), 'PBKDF2', false, ['deriveKey']);
@@ -335,7 +310,7 @@ const dash = (() => {
   let dados = {}, params = {}; const cbs = [];
   const fire = () => cbs.forEach((f) => f());
   return {
-    colors: ['#261252', '#FB4B2E', '#15CC64', '#2F7FD1', '#E0A100', '#9B5DE5', '#6B7C8F'],
+    colors: ['#33176b', '#fa4a2e', '#1ac963', '#00bfc7', '#e0d938', '#a3b2bf', '#bd3824', '#6b7c8f'],
     data: (id) => (dados[id] ? { status: 'ok', data: dados[id] } : { status: 'loading', data: null }),
     params: () => params,
     setParams: (o) => { params = Object.assign({}, params, o); fire(); },
@@ -439,9 +414,6 @@ const dash = (() => {
   };
 
   // ---------- controles (ligados uma vez)
-  $('#f-faz').addEventListener('change', (e) => dash.setParams({ fazenda: e.target.value }));
-  $('#f-mes').addEventListener('change', (e) => dash.setParams({ mes: e.target.value }));
-  $('#f-reset').addEventListener('click', () => dash.resetParams());
   document.querySelectorAll('[data-metrica]').forEach((b) => b.addEventListener('click', () => dash.setParams({ metrica: b.getAttribute('data-metrica') })));
   document.querySelectorAll('[data-ranking]').forEach((b) => b.addEventListener('click', () => dash.setParams({ ranking: b.getAttribute('data-ranking') })));
   const qs = { planilha: 'TODAS', grav: 'todas', q: '' };
@@ -450,224 +422,6 @@ const dash = (() => {
   $('#q-bu').addEventListener('input', (e) => { qs.q = e.target.value.toLowerCase(); drawQual(); });
 
   // ---------- filtros
-  const fillFilters = (p) => {
-    const k = R('kpi');
-    if (!k.length) return;
-    const fz = [...new Set(k.map((r) => r.fazenda))];
-    const ms0 = [...new Set(k.map((r) => r.mes))].filter((m) => m !== 'TODOS').sort();
-    const ms = ms0.length ? monthRange(ms0[0], ms0[ms0.length - 1]) : [];
-    const sf = $('#f-faz'), sm = $('#f-mes');
-    sf.replaceChildren(...fz.map((f) => new Option(fazLabel(f), f)));
-    sm.replaceChildren(new Option('Todos os meses', 'TODOS'), ...ms.map((m) => new Option(fmtMes(m), m)));
-    sf.value = p.fazenda;
-    sm.value = p.mes;
-  };
-
-  const kpiRow = (f, m) => R('kpi').find((r) => r.fazenda === f && r.mes === m);
-
-  const drawHeader = (p) => {
-    const el = $('#pc-take');
-    el.replaceChildren();
-    const k = kpiRow(p.fazenda, p.mes);
-    if (D('kpi').status === 'ok') {
-      if (!k || !num(k.n)) {
-        el.textContent = 'Não há lançamentos para ' + fazLabel(p.fazenda).toLowerCase() + ' em ' + fmtMes(p.mes).toLowerCase() + '.';
-      } else {
-        const w = where({ fazenda: p.fazenda, mes: p.mes });
-        const mk = (field, text) => h('span', { class: 'pc-num', 'data-source': 'kpi', 'data-field': field, 'data-where': w, text });
-        el.append(p.fazenda === 'TODAS' ? 'No conjunto das fazendas' : p.fazenda, ' (', fmtMes(p.mes).toLowerCase(), ') o custo foi de ',
-          mk('valor', brlC(num(k.valor))), ' em ', mk('n', nf0.format(num(k.n))), ' lançamentos; a maior fatia é ',
-          mk('cat_top', k.cat_top), ' (', mk('pct_cat_top', pct(num(k.pct_cat_top))), ' do custo).');
-      }
-    }
-    const g = R('geral')[0];
-    const up = $('#pc-upd');
-    up.replaceChildren();
-    if (g) {
-      up.append('Planilhas atualizadas em ', h('span', { class: 'pc-num', 'data-source': 'geral', 'data-field': 'atualizado_em', 'data-where': 'id=geral', text: fmtData(g.atualizado_em) }),
-        ' · último lançamento em ', h('span', { class: 'pc-num', 'data-source': 'geral', 'data-field': 'ultimo_lancamento', 'data-where': 'id=geral', text: fmtData(g.ultimo_lancamento) }));
-    }
-  };
-
-  const drawTiles = (p) => {
-    const k = kpiRow(p.fazenda, p.mes);
-    const w = where({ fazenda: p.fazenda, mes: p.mes });
-    const set = (n, text, sub) => {
-      const v = $('#t' + n + 'v');
-      v.textContent = text;
-      if (k) v.setAttribute('data-where', w);
-      $('#t' + n + 's').textContent = sub;
-    };
-    if (!k) { for (let n = 1; n <= 5; n += 1) set(n, '—', ''); return; }
-    const valor = num(k.valor), nn = num(k.n), ha = num(k.ha), cha = num(k.custo_ha);
-    set(1, brlC(valor), nf0.format(nn) + ' lançamentos · ' + fmtMes(p.mes).toLowerCase());
-    set(2, cha === null ? '—' : 'R$ ' + nf0.format(cha) + '/ha',
-      ha === null ? 'sem área cadastrada para esta fazenda' : (p.fazenda === 'TODAS' ? 'só fazendas com área (' + nf0.format(ha) + ' ha' + (num(k.area_estimada) ? ', parte estimada' : '') + ')'
-      : nf1.format(ha) + (num(k.area_estimada) ? ' ha estimados (projeto)' : ' ha cadastrados')));
-    set(3, num(k.pct_mo) === null ? '—' : pct(num(k.pct_mo)), brlC(num(k.valor_mo) || 0) + ' em mão de obra');
-    set(4, k.cat_top || '—', num(k.pct_cat_top) === null ? '' : pct(num(k.pct_cat_top)) + ' do custo · ' + brlC(num(k.valor_cat_top) || 0));
-    set(5, num(k.ticket) === null ? '—' : brl0(num(k.ticket)), 'por lançamento');
-  };
-
-  // ---------- custo mês a mês
-  const drawMensal = (p) => {
-    const box = done($('#c-mensal'));
-    const card = $('#card-mensal');
-    const rows = R('mensal').filter((r) => r.fazenda === p.fazenda);
-    const meses = [...new Set(R('kpi').map((r) => r.mes))].filter((m) => m !== 'TODOS').sort();
-    const ha = rows.length ? num(rows[0].ha) : null;
-    const bHa = $('#b-ha');
-    bHa.disabled = !ha;
-    document.querySelectorAll('[data-metrica]').forEach((b) => b.classList.toggle('is-on', b.getAttribute('data-metrica') === (p.metrica === 'ha' && ha ? 'ha' : 'valor')));
-    if (!rows.length || !meses.length) { noData(box, 'Sem lançamentos mensais para esta fazenda.'); return; }
-    const porHa = p.metrica === 'ha' && !!ha;
-    const todos = monthRange(meses[0], meses[meses.length - 1]);
-    const val = (m, c) => {
-      const r = rows.find((x) => x.mes === m && x.categoria === c);
-      if (!r) return 0;
-      return porHa ? (num(r.valor_base_ha) || 0) / ha : (num(r.valor) || 0);
-    };
-    const fmt = (v) => porHa ? 'R$ ' + nf0.format(v) : brlC(v);
-    const tot = todos.map((m) => CATS.reduce((s, c) => s + val(m, c), 0));
-    const max = Math.max(...tot, 1);
-    const H = 220;
-    const wrap = h('div', { class: 'pc-cols' });
-    todos.forEach((m, i) => {
-      const col = h('div', { class: 'pc-col' + (p.mes === m ? ' is-sel' : (p.mes !== 'TODOS' ? ' is-dim' : '')), role: 'button', tabindex: '0', 'aria-label': 'Filtrar por ' + fmtMes(m) });
-      const stack = h('div', { class: 'pc-stack', style: 'height:' + H + 'px' });
-      CATS.forEach((c, ci) => {
-        const v = val(m, c);
-        if (v <= 0) return;
-        const seg = h('div', { class: 'pc-seg', style: 'height:' + Math.max(1, v / max * H) + 'px;background:' + catColor(c) });
-        seg.addEventListener('mousemove', (ev) => tipShow(card, ev, [{ t: fmtMes(m) }, { sw: catColor(c), t: c + ': ' + fmt(v) }, { t: 'Total do mês: ' + fmt(tot[i]) }]));
-        seg.addEventListener('mouseleave', () => tipHide(card));
-        stack.append(seg);
-      });
-      col.append(h('div', { class: 'pc-col-top', text: tot[i] > 0 ? fmt(tot[i]) : '' }), stack, h('div', { class: 'pc-col-l', text: fmtMes(m) }));
-      const toggle = () => dash.setParams({ mes: p.mes === m ? 'TODOS' : m });
-      col.addEventListener('click', toggle);
-      col.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(); } });
-      wrap.append(col);
-    });
-    const leg = h('div', { class: 'pc-leg' }, CATS.map((c) => h('span', null, h('i', { style: 'background:' + catColor(c) }), c)));
-    box.append(wrap, leg);
-    if (p.metrica === 'ha' && !ha) box.append(h('p', { class: 'pc-note', text: 'Esta fazenda ainda não tem área cadastrada; mostrando em R$.' }));
-  };
-
-  // ---------- custo por hectare
-  const drawHa = (p) => {
-    const box = done($('#c-ha'));
-    const k = R('kpi').filter((r) => r.mes === p.mes && r.fazenda !== 'TODAS');
-    const com = k.filter((r) => num(r.custo_ha) !== null).sort((a, b) => num(b.custo_ha) - num(a.custo_ha));
-    const sem = k.filter((r) => num(r.custo_ha) === null && num(r.valor) > 0).sort((a, b) => num(b.valor) - num(a.valor));
-    const media = kpiRow('TODAS', p.mes);
-    if (!com.length) { noData(box, 'Nenhuma fazenda com área cadastrada tem custo neste mês.'); return; }
-    const max = Math.max(...com.map((r) => num(r.custo_ha)), media && num(media.custo_ha) ? num(media.custo_ha) : 0, 1);
-    com.forEach((r, i) => box.append(barRow({
-      label: r.fazenda, value: num(r.custo_ha), max, color: dash.colors[i % dash.colors.length],
-      text: 'R$ ' + nf0.format(num(r.custo_ha)) + '/ha', sub: nf1.format(num(r.ha)) + ' ha' + (num(r.area_estimada) ? ' (estimada)' : '') + ' · ' + brlC(num(r.valor)),
-      sel: p.fazenda === r.fazenda, onClick: () => dash.setParams({ fazenda: p.fazenda === r.fazenda ? 'TODAS' : r.fazenda })
-    })));
-    if (media && num(media.custo_ha)) {
-      box.append(barRow({ label: 'Média das fazendas com área', value: num(media.custo_ha), max, color: 'var(--cds-chart-muted)', ref: true,
-        text: 'R$ ' + nf0.format(num(media.custo_ha)) + '/ha', sub: nf0.format(num(media.ha)) + ' ha no total' + (num(media.area_estimada) ? ' (inclui áreas estimadas)' : '') }));
-    }
-    if (sem.length) box.append(h('p', { class: 'pc-note', text: 'Sem área cadastrada (não entram no R$/ha): ' + sem.map((r) => r.fazenda + ' (' + brlC(num(r.valor)) + ')').join(' · ') + '.' }));
-  };
-
-  const drawHeat = (p) => {
-    const box = done($('#c-heat'));
-    const cub = R('cat_cubo').filter((r) => r.mes === p.mes);
-    const farms = R('kpi').filter((r) => r.mes === p.mes && r.fazenda !== 'TODAS' && num(r.ha)).map((r) => r.fazenda);
-    if (!farms.length || !CATS.length) { noData(box, 'Sem fazendas com área cadastrada.'); return; }
-    const linhas = [...farms, 'TODAS'];
-    const get = (f, c) => { const r = cub.find((x) => x.fazenda === f && x.categoria === c); return r ? num(r.custo_ha) : null; };
-    let max = 1;
-    linhas.forEach((f) => CATS.forEach((c) => { const v = get(f, c); if (v !== null && v > max) max = v; }));
-    const table = h('table', { class: 'pc-heat' });
-    table.append(h('thead', null, h('tr', null, h('th', { text: 'Fazenda' }), CATS.map((c) => h('th', { class: 'n', text: c })), h('th', { class: 'n', text: 'Total' }))));
-    const tb = h('tbody');
-    linhas.forEach((f) => {
-      const tr = h('tr', null, h('td', { text: f === 'TODAS' ? 'Média (fazendas com área)' : f }));
-      CATS.forEach((c) => {
-        const v = get(f, c);
-        const td = h('td', { text: v === null ? '—' : nf0.format(v) });
-        if (v !== null && v > 0) td.style.background = 'color-mix(in srgb, ' + catColor(c) + ' ' + Math.round(v / max * 75) + '%, transparent)';
-        tr.append(td);
-      });
-      const kr = kpiRow(f, p.mes);
-      tr.append(h('td', { text: kr && num(kr.custo_ha) !== null ? nf0.format(num(kr.custo_ha)) : '—' }));
-      tb.append(tr);
-    });
-    table.append(tb);
-    box.append(table, h('p', { class: 'pc-note', text: 'Valores em R$ por hectare.' }));
-  };
-
-  // ---------- composição e rankings
-  const drawComp = (p) => {
-    const box = done($('#c-comp'));
-    const rows = R('cat_cubo').filter((r) => r.fazenda === p.fazenda && r.mes === p.mes && num(r.valor) > 0).sort((a, b) => num(b.valor) - num(a.valor));
-    if (!rows.length) { noData(box, 'Sem lançamentos para esta combinação.'); return; }
-    const max = Math.max(...rows.map((r) => num(r.valor)), 1);
-    rows.forEach((r) => box.append(barRow({
-      label: r.categoria, value: num(r.valor), max, color: catColor(r.categoria),
-      text: brlC(num(r.valor)) + ' · ' + pct(num(r.pct)), sub: num(r.custo_ha) !== null ? 'R$ ' + nf0.format(num(r.custo_ha)) + '/ha' + (p.fazenda === 'TODAS' ? ' (só fazendas com área)' : '') : null
-    })));
-  };
-
-  const drawList = (boxId, dim, p, opts) => {
-    const box = done($(boxId));
-    const rows = R('rankings').filter((r) => r.dim === dim && r.fazenda === p.fazenda && r.mes === p.mes).sort((a, b) => a.rank - b.rank);
-    if (!rows.length) { noData(box, opts && opts.vazio ? opts.vazio : 'Sem lançamentos para esta combinação.'); return; }
-    const max = Math.max(...rows.map((r) => num(r.valor)), 1);
-    rows.forEach((r) => {
-      const partes = String(r.rotulo).split(' · ');
-      const nome = partes.length > 1 ? partes.slice(1).join(' · ') : r.rotulo;
-      const subs = [];
-      if (partes.length > 1) subs.push(partes[0]);
-      if (r.rank !== 99 && opts && opts.categoria && r.categoria) subs.push(r.categoria);
-      subs.push(nf0.format(num(r.n)) + ' lançamentos');
-      if (num(r.custo_ha) !== null) subs.push('R$ ' + nf0.format(num(r.custo_ha)) + '/ha');
-      box.append(barRow({
-        label: nome, value: num(r.valor), max, color: r.rank === 99 ? 'var(--cds-chart-muted)' : (opts && opts.cor ? opts.cor : catColor(r.categoria)),
-        text: brlC(num(r.valor)) + ' · ' + pct(num(r.pct)), sub: subs.join(' · ')
-      }));
-    });
-  };
-
-  const drawRank = (p) => {
-    document.querySelectorAll('[data-ranking]').forEach((b) => b.classList.toggle('is-on', b.getAttribute('data-ranking') === p.ranking));
-    drawList('#c-rank', p.ranking, p, null);
-  };
-
-  // ---------- vencimentos
-  const drawVenc = (p) => {
-    const box = done($('#c-venc'));
-    const card = $('#card-venc');
-    const rows = R('vencimentos').filter((r) => r.fazenda === p.fazenda);
-    if (!rows.length) { noData(box, 'Sem vencimentos para esta fazenda.'); return; }
-    const ms = rows.map((r) => r.mes_venc).sort();
-    const todos = monthRange(ms[0], ms[ms.length - 1]);
-    const v = (m) => { const r = rows.find((x) => x.mes_venc === m); return r ? num(r.valor) : 0; };
-    const max = Math.max(...todos.map(v), 1);
-    const H = 160;
-    const wrap = h('div', { class: 'pc-cols' });
-    todos.forEach((m) => {
-      const col = h('div', { class: 'pc-col' });
-      const stack = h('div', { class: 'pc-stack', style: 'height:' + H + 'px' });
-      if (v(m) > 0) {
-        const seg = h('div', { class: 'pc-seg', style: 'height:' + Math.max(1, v(m) / max * H) + 'px;background:' + dash.colors[1 % dash.colors.length] });
-        seg.addEventListener('mousemove', (ev) => tipShow(card, ev, [{ t: 'Vencimento em ' + fmtMes(m) }, { t: brl0(v(m)) }]));
-        seg.addEventListener('mouseleave', () => tipHide(card));
-        stack.append(seg);
-      }
-      col.append(h('div', { class: 'pc-col-top', text: v(m) > 0 ? brlC(v(m)) : '' }), stack, h('div', { class: 'pc-col-l', text: fmtMes(m) }));
-      wrap.append(col);
-    });
-    box.append(wrap);
-  };
-
-  // ---------- qualidade
   const drawQualTiles = () => {
     const g = R('geral')[0];
     if (!g) return;
@@ -726,22 +480,7 @@ const dash = (() => {
 
   // ---------- desenho geral
   dash.onData(() => {
-    const p = P();
-    if (D('cat_cubo').status === 'ok') CATS = [...new Set(R('cat_cubo').map((r) => r.categoria))];
-    fillFilters(p);
     fillQualFilter();
-    drawHeader(p);
-    drawTiles(p);
-    drawMensal(p);
-    drawHa(p);
-    drawHeat(p);
-    drawComp(p);
-    drawRank(p);
-    drawList('#c-forn', 'fornecedor', p, { cor: dash.colors[0], vazio: 'Sem fornecedores identificados para esta combinação.' });
-    drawList('#c-frota', 'frota', p, { cor: dash.colors[1 % dash.colors.length], vazio: 'Sem manutenção com código de frota para esta combinação.' });
-    drawList('#c-dest', 'destinacao', p, { cor: dash.colors[2 % dash.colors.length], vazio: 'Sem destinação informada para esta combinação.' });
-    drawList('#c-pag', 'forma', p, { cor: dash.colors[3 % dash.colors.length] });
-    drawVenc(p);
     drawQualTiles();
     drawQual();
     drawFontes();
@@ -764,6 +503,7 @@ async function entrar(senha, auto) {
     if ($$('#lembrar').checked || auto) guardar(senha); else guardar(null);
     $$('#login').hidden = true; $$('#app').hidden = false; window.scrollTo(0, 0);
     dash.carregar(dados);
+    try { $$('#quem').textContent = dados.perfil[0].nome; } catch (e) {}
     $$('#senha').value = '';
   } catch (e) {
     if (auto) guardar(null);
@@ -776,5 +516,6 @@ $$('#sair').addEventListener('click', () => { guardar(null); location.reload(); 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 const g0 = guardada(); if (g0) { $$('#lembrar').checked = true; entrar(g0, true); }
 </script>
+<script src="bi.js"></script>
 </body>
 </html>
