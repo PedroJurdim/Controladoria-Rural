@@ -188,6 +188,8 @@ main{padding:20px max(16px,env(safe-area-inset-right)) 28px max(16px,env(safe-ar
 .bi-lb{height:10px;background:#eee9f6;border-radius:5px;overflow:hidden}.bi-lb i{display:block;height:100%;border-radius:5px}
 .bi-lv{font-variant-numeric:tabular-nums;font-size:12px;color:var(--color-fg-muted);text-align:right;white-space:nowrap}
 @media (max-width:600px){.bi-lh{grid-template-columns:1fr auto;grid-template-areas:"n v" "b b"}.bi-ln{grid-area:n}.bi-lv{grid-area:v}.bi-lb{grid-area:b}.bi-vv{font-size:9px}}
+.bi-par{flex:0 0 190px;display:flex;gap:3px;align-items:flex-end;justify-content:center}
+.bi-par i{display:block;width:45%;border-radius:3px 3px 0 0;min-height:1px}.bi-par i.orc{background:#cfd6df}
 </style>
 </head>
 <body>
@@ -212,6 +214,8 @@ main{padding:20px max(16px,env(safe-area-inset-right)) 28px max(16px,env(safe-ar
     <button type="button" data-aba="geral" class="on">Visão geral</button>
     <button type="button" data-aba="explorar">Explorar</button>
     <button type="button" data-aba="frota">Frota</button>
+    <button type="button" data-aba="orc">Orçado × realizado</button>
+    <button type="button" data-aba="cad">Fazendas e talhões</button>
     <button type="button" data-aba="qual">Qualidade dos dados</button>
   </nav>
   <main>
@@ -223,6 +227,8 @@ main{padding:20px max(16px,env(safe-area-inset-right)) 28px max(16px,env(safe-ar
 
 <div class="aba col" id="v-explorar" hidden></div>
 <div class="aba col" id="v-frota" hidden></div>
+<div class="aba col" id="v-orc" hidden></div>
+<div class="aba col" id="v-cad" hidden></div>
 
 <div class="aba col" id="v-qual" hidden>
   <h2 class="pc-sec">Qualidade dos dados</h2>
